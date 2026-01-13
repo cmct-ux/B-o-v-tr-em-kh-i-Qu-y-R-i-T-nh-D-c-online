@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phân tích nội dung</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+  font-family:'Baloo 2', cursive;
+  background:linear-gradient(135deg,#fdfbfb,#ebedee);
+  text-align:center;
+  padding:40px;
+}
+.container{
+  background:white;
+  max-width:600px;
+  margin:auto;
+  padding:30px;
+  border-radius:20px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+textarea{
+  width:95%;
+  height:160px;
+  font-size:16px;
+  padding:10px;
+  border-radius:10px;
+}
+button{
+  margin-top:20px;
+  padding:12px 30px;
+  border:none;
+  border-radius:30px;
+  font-size:16px;
+  background:#ff6f61;
+  color:white;
+  cursor:pointer;
+}
+#result{
+  margin-top:15px;
+  font-size:18px;
+  font-weight:bold;
+  color:green;
+}
+.sticker{width:90px;margin-top:15px;}
+</style>
+</head>
+
+<body>
+<div class="container">
+  <h1>Phân tích tin nhắn / hình ảnh</h1>
+  <p>Nhập nội dung tin nhắn từ đối phương</p>
+
+  <textarea id="message"></textarea><br>
+  <button onclick="analyze()">Phân tích</button>
+
+  <div id="result"></div>
+
+  <img class="sticker" src="https://i.imgur.com/0y0y0y0.png">
+</div>
+
+<script>
+const offensive=[
+"gửi ảnh nóng","ảnh nude","show hàng","chat sex","đi khách sạn",
+"bao nuôi","tự sướng","clip nóng","hack camera",
+"vòng một","mông to","dâm đãng","dễ dãi",
+"anh chỉ đùa","bí mật của chúng ta","đừng chặn tôi",
+"thủ dâm","ăn tươi nuốt sống","em thuộc về anh"
+];
+
+// cấu trúc nguy hiểm
+const patterns=[
+/gửi\s+ảnh.*cho/i,
+/chụp.*gửi/i,
+/quay.*clip/i,
+/ảnh.*nóng/i
+];
+
+function analyze(){
+  const text=document.getElementById("message").value.toLowerCase();
+  let danger=false;
+
+  for(let w of offensive){
+    if(text.includes(w)){danger=true;break;}
+  }
+
+  if(!danger){
+    for(let p of patterns){
+      if(p.test(text)){danger=true;break;}
+    }
+  }
+
+  if(danger){
+    window.location.href="alert.html";
+  }else{
+    document.getElementById("result").innerText="Nội dung an toàn, lành mạnh";
+  }
+}
+</script>
+</body>
+</html>
